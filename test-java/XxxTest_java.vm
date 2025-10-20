@@ -28,22 +28,24 @@ class ${entity.name}Test extends AbstractJpaTest {
 #set( $values3 = $fn.buildValues($entity.attributes, 3) )
 ## ----------
 #if( $entity.hasGeneratedKey() )
-#set( $KEY = "key")
+#set( $KEY = "key" )
 #else
-#set( $KEY = "KEY")
+#set( $KEY = "KEY" )
 #end
 ## ----------
 #macro( setNonKeyAttributes $argEntityVar $argValues )
 $__#foreach($attribute in $entity.nonKeyAttributes)
-$____#if ( ! $attribute.isFK() )
-$______#if ( ! $attribute.isGeneratedValue() )
-		${argEntityVar}.${attribute.setter}( $argValues.getValue($attribute.name) );
-$______#else
+## FK can be set since FK constraints are disabled in H2 (see AbstractJpaTest)
+##$____#if ( ! $attribute.isFK() )
+$______#if ( $attribute.isGeneratedValue() )
 		// $attribute.name is generated => do not set
+$______#else
+$______#if ( $attribute.isFK() )#set( $FKcomment = "// FK (but constraints disabled for tests)" )#else#set( $FKcomment = "")#end
+		${argEntityVar}.${attribute.setter}( $argValues.getValue($attribute.name) ); $FKcomment
 $______#end 
-$____#else
-		// $attribute.name is a Foreign Key => do not set
-$____#end 
+##$____#else
+##		// $attribute.name is a Foreign Key => do not set
+##$____#end 
 $__#end
 #end
 ## ----------
