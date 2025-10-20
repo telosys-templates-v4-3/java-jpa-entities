@@ -1,6 +1,6 @@
 # JPA entities with JUnit test cases
 
-This bundle generates JPA entities for JPA API (Jakarta) with Hibernate implementation plus JUnit tests for CRUD operations.
+This bundle generates Java entities for JPA API (Jakarta) with Hibernate implementation plus JUnit tests for CRUD operations.
 
 Generated files:
 
