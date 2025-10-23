@@ -30,6 +30,13 @@
 		    <version>7.1.4.Final</version>  <!--  7.1.4.Final = Oct 12, 2025  -->
 		</dependency>	
 
+		<!-- JDBC driver for PostgreSQL -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.7.3</version> <!-- Adjust the version according with PostgreSQL server version -->
+		</dependency>
+
 		<!-- ===== Dependencies for Unit Testing ===== -->
 		<!-- JUnit 5 -->
 		<dependency>
