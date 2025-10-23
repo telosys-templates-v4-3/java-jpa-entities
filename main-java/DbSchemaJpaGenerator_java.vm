@@ -24,6 +24,10 @@ public class DbSchemaJpaGenerator {
         String createSqlFile = "schema-create.sql";
         String dropSqlFile   = "schema-drop.sql";
 
+        // Step 0 - Delete existing files (many JPA providers will not overwrite files that already exist)
+        Files.deleteIfExists(Paths.get(createSqlFile));
+        Files.deleteIfExists(Paths.get(dropSqlFile));
+
         // Step 1 - SQL files generation
         generateDbSchema(PERSISTENCE_UNIT_NAME, createSqlFile, dropSqlFile);
         
