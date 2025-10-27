@@ -14,6 +14,7 @@ import jakarta.persistence.Persistence;
 
 /**
  * SQL files generator for database schema creation and deletion 
+ * NB: JPA tries to bootstrap a JDBC connection => the database must be started
  */
 public class DbSchemaJpaGenerator {
 	
@@ -46,14 +47,18 @@ public class DbSchemaJpaGenerator {
      */
     private static void generateDbSchema(String persistenceUnitName, String createSqlFile, String dropSqlFile) {
         
-        // Where to write the DDL scripts
         Map<String, Object> properties = new HashMap<>();
+        // which DDL scripts
         properties.put("jakarta.persistence.schema-generation.scripts.action",        "drop-and-create");
+        // where to write the DDL scripts
         properties.put("jakarta.persistence.schema-generation.scripts.create-target", createSqlFile );
         properties.put("jakarta.persistence.schema-generation.scripts.drop-target",   dropSqlFile);
 
-        // Optional: specify database dialect (important for correct SQL)
+        // "database-product-name" => to specify database dialect (important for correct SQL)
         properties.put("jakarta.persistence.database-product-name", DATABASE_PRODUCT_NAME);
+
+        // "database.action = none" => guarantees the database is not modified (Hibernate will never execute DDL on the database)
+        properties.put("jakarta.persistence.schema-generation.database.action", "none"); 
 
         // Name must match your persistence unit name in persistence.xml
         Persistence.generateSchema(persistenceUnitName, properties);
